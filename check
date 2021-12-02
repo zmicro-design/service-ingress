@@ -1,0 +1,34 @@
+#!/bin/bash
+
+load inquirer
+
+check() {
+  if [ ! -f $SERVICE_CONFIG ]; then
+     touch $SERVICE_CONFIG
+  fi
+  config::load_file $SERVICE_CONFIG
+
+  if [ ! -d $SERVICE_INGRESS_CONFIG_ROUTER ]; then
+    log::error "[ingress] cannot router config in $SERVICE_INGRESS_CONFIG_ROUTER"
+    exit 1
+  fi
+
+  if [ -z "$SERVICE_INGRESS_DOMAIN" ]; then
+    inquirer::text "请输入 SERVICE_INGRESS_DOMAIN:" value
+    config::set SERVICE_INGRESS_DOMAIN $value $SERVICE_CONFIG
+  fi
+
+  local SERVICE_INGRESS_DOMAIN_SSL=$SERVICE_INGRESS_SSL/$SERVICE_INGRESS_DOMAIN
+  if [ ! -d $SERVICE_INGRESS_DOMAIN_SSL ]; then
+    log::error "[ingress] cannot found ssl directory for $SERVICE_INGRESS_DOMAIN"
+    exit 1
+  fi
+
+  # load again
+  config::load_file $SERVICE_CONFIG
+  
+  # @TODO
+  export SERVICE_INGRESS_DOMAIN=$SERVICE_INGRESS_DOMAIN
+}
+
+check $@

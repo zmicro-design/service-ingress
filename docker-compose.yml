@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  ingress:
+    restart: always
+    image: whatwewant/open-ingress:${SERVICE_INGRESS_VERSION}
+    ports:
+      - 0.0.0.0:80:80
+      - 0.0.0.0:443:443
+    environment:
+      DOMAIN: ${SERVICE_INGRESS_DOMAIN}
+    volumes:
+      - ${SERVICE_CONFIGS}:/config
+      - ${SERVICE_LOGS}/waf:/var/log/waf
+
+networks:
+  default:
+    external: true
+    name: compose-ingress
