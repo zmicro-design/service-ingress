@@ -8,8 +8,8 @@ check() {
   fi
   config::load_file $SERVICE_CONFIG
 
-  if [ ! -d $SERVICE_INGRESS_CONFIG_ROUTER ]; then
-    log::error "[ingress] cannot router config in $SERVICE_INGRESS_CONFIG_ROUTER"
+  if [ ! -f $SERVICE_INGRESS_CONFIG_ROUTER ]; then
+    log::error "[ingress] cannot found config in $SERVICE_INGRESS_CONFIG_ROUTER"
     exit 1
   fi
 
