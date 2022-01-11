@@ -11,6 +11,7 @@ services:
       DOMAIN: ${SERVICE_INGRESS_DOMAIN}
     volumes:
       - ${SERVICE_CONFIGS}/config.yml:/app/conf/config.yml
+      - ${SERVICE_CONFIGS}/ssl:/etc/letsencrypt/live
       - ${SERVICE_LOGS}/waf:/var/log/waf
 
 networks:
