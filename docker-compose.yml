@@ -10,7 +10,7 @@ services:
     environment:
       DOMAIN: ${SERVICE_INGRESS_DOMAIN}
     volumes:
-      - ${SERVICE_CONFIGS}/config.yml:/app/conf/config.yml
+      - ${SERVICE_CONFIGS}:/app/conf/config
       - ${SERVICE_CONFIGS}/ssl:/config/ssl
       - ${SERVICE_LOGS}/waf:/var/log/waf
 
