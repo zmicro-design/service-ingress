@@ -1,3 +1,3 @@
 NAME=ingress
-VERSION=v1.0.11
+VERSION=v1.1.0
 DESCRIPTION="Ingress Service"
