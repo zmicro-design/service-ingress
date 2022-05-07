@@ -18,10 +18,29 @@ check() {
     config::set SERVICE_INGRESS_DOMAIN $value $SERVICE_CONFIG
   fi
 
-  local SERVICE_INGRESS_DOMAIN_SSL=$SERVICE_INGRESS_SSL/$SERVICE_INGRESS_DOMAIN
-  if [ ! -d $SERVICE_INGRESS_DOMAIN_SSL ]; then
-    log::error "[ingress] cannot found ssl directory for $SERVICE_INGRESS_DOMAIN"
-    exit 1
+  if [ -z "$SERVICE_INGRESS_IS_LOCAL" ]; then
+    local choices=(
+      "No"
+      "Yes"
+    )
+    inquirer::select "是否 SERVICE_INGRESS_IS_LOCAL？yes or No" choices value
+    if [ "$value" = "Yes" ]; then
+      value=true
+    else
+      value=false
+    fi
+
+    config::set SERVICE_INGRESS_IS_LOCAL $value $SERVICE_CONFIG
+    #
+    SERVICE_INGRESS_IS_LOCAL=$value
+  fi
+
+  if [ "$SERVICE_INGRESS_IS_LOCAL" = "false" ]; then
+    local SERVICE_INGRESS_DOMAIN_SSL=$SERVICE_INGRESS_SSL/$SERVICE_INGRESS_DOMAIN
+    if [ ! -d $SERVICE_INGRESS_DOMAIN_SSL ]; then
+      log::error "[ingress] cannot found ssl directory for $SERVICE_INGRESS_DOMAIN"
+      exit 1
+    fi
   fi
 
   # load again
@@ -29,6 +48,12 @@ check() {
   
   # @TODO
   export SERVICE_INGRESS_DOMAIN=$SERVICE_INGRESS_DOMAIN
+  export SERVICE_INGRESS_IS_LOCAL=$SERVICE_INGRESS_IS_LOCAL
+
+  export SERVICE_INGRESS_HTTPS=true
+  if [ "$SERVICE_INGRESS_IS_LOCAL" = "true" ]; then
+    export SERVICE_INGRESS_HTTPS=false
+  fi
 }
 
 check $@
