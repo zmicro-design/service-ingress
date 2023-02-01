@@ -4,7 +4,7 @@ load inquirer
 
 check() {
   if [ ! -f $SERVICE_CONFIG ]; then
-     touch $SERVICE_CONFIG
+    touch $SERVICE_CONFIG
   fi
   config::load_file $SERVICE_CONFIG
 
@@ -45,7 +45,7 @@ check() {
 
   # load again
   config::load_file $SERVICE_CONFIG
-  
+
   # @TODO
   export SERVICE_INGRESS_DOMAIN=$SERVICE_INGRESS_DOMAIN
   export SERVICE_INGRESS_IS_LOCAL=$SERVICE_INGRESS_IS_LOCAL
@@ -55,6 +55,28 @@ check() {
   export SERVICE_INGRESS_HTTPS=true
   if [ "$SERVICE_INGRESS_IS_LOCAL" = "true" ]; then
     export SERVICE_INGRESS_HTTPS=false
+  fi
+
+  if [ "$SERVICE_INGRESS_HTTPS" = "true" ]; then
+    if [ -z "$SERVICE_INGRESS_HTTPS_PORT" ]; then
+      inquirer::text "请输入 SERVICE_INGRESS_HTTPS_PORT:" value
+      config::set SERVICE_INGRESS_HTTPS_PORT $value $SERVICE_CONFIG
+    fi
+
+    config::load_file $SERVICE_CONFIG
+
+    export SERVICE_INGRESS_PORT_HOST=$SERVICE_INGRESS_HTTPS_PORT
+    export SERVICE_INGRESS_PORT_CONTAINER=443
+  else
+  if [ -z "$SERVICE_INGRESS_HTTP_PORT" ]; then
+      inquirer::text "请输入 SERVICE_INGRESS_HTTP_PORT:" value
+      config::set SERVICE_INGRESS_HTTP_PORT $value $SERVICE_CONFIG
+    fi
+
+    config::load_file $SERVICE_CONFIG
+
+    export SERVICE_INGRESS_PORT_HOST=$SERVICE_INGRESS_HTTP_PORT
+    export SERVICE_INGRESS_PORT_CONTAINER=80
   fi
 }
 
