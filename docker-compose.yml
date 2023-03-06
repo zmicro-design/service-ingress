@@ -11,8 +11,8 @@ services:
       # MODE: debug
       HTTPS: "${SERVICE_INGRESS_HTTPS}"
     volumes:
-      - ${SERVICE_CONFIGS}:/app/conf/config
-      - ${SERVICE_CONFIGS}/ssl:/config/ssl
+      - ${SERVICE_INGRESS_CONFIG_DIR}:/app/conf/config
+      - ${SERVICE_INGRESS_CONFIG_DIR}/ssl:/config/ssl
       - ${SERVICE_LOGS}/waf:/var/log/waf
 
 networks:
