@@ -63,19 +63,22 @@ check() {
     fi
 
     config::load_file $SERVICE_CONFIG
-
-    export SERVICE_INGRESS_PORT_HOST=$SERVICE_INGRESS_HTTPS_PORT
-    export SERVICE_INGRESS_PORT_CONTAINER=443
   else
+
   if [ -z "$SERVICE_INGRESS_HTTP_PORT" ]; then
       inquirer::text "请输入 SERVICE_INGRESS_HTTP_PORT:" value
       config::set SERVICE_INGRESS_HTTP_PORT $value $SERVICE_CONFIG
     fi
 
     config::load_file $SERVICE_CONFIG
+  fi
 
-    export SERVICE_INGRESS_PORT_HOST=$SERVICE_INGRESS_HTTP_PORT
-    export SERVICE_INGRESS_PORT_CONTAINER=80
+  if [ -z "$SERVICE_INGRESS_HTTPS_PORT" ]; then
+      inquirer::text "请输入 SERVICE_INGRESS_HTTPS_PORT:" value
+      config::set SERVICE_INGRESS_HTTPS_PORT $value $SERVICE_CONFIG
+    fi
+
+    config::load_file $SERVICE_CONFIG
   fi
 }
 
