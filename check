@@ -18,6 +18,16 @@ check() {
     config::set SERVICE_INGRESS_DOMAIN $value $SERVICE_CONFIG
   fi
 
+  if [ -z "$SERVICE_INGRESS_HTTP_PORT" ]; then
+    inquirer::text "请输入 SERVICE_INGRESS_HTTP_PORT:" value
+    config::set SERVICE_INGRESS_HTTP_PORT $value $SERVICE_CONFIG
+  fi
+
+  if [ -z "$SERVICE_INGRESS_HTTPS_PORT" ]; then
+    inquirer::text "请输入 SERVICE_INGRESS_HTTPS_PORT:" value
+    config::set SERVICE_INGRESS_HTTPS_PORT $value $SERVICE_CONFIG
+  fi
+
   if [ -z "$SERVICE_INGRESS_IS_LOCAL" ]; then
     local choices=(
       "No"
@@ -56,30 +66,7 @@ check() {
     export SERVICE_INGRESS_FORCE_HTTPS=false
   fi
 
-  if [ "$SERVICE_INGRESS_HTTPS" = "true" ]; then
-    if [ -z "$SERVICE_INGRESS_HTTPS_PORT" ]; then
-      inquirer::text "请输入 SERVICE_INGRESS_HTTPS_PORT:" value
-      config::set SERVICE_INGRESS_HTTPS_PORT $value $SERVICE_CONFIG
-    fi
-
-    config::load_file $SERVICE_CONFIG
-  else
-
-  if [ -z "$SERVICE_INGRESS_HTTP_PORT" ]; then
-      inquirer::text "请输入 SERVICE_INGRESS_HTTP_PORT:" value
-      config::set SERVICE_INGRESS_HTTP_PORT $value $SERVICE_CONFIG
-    fi
-
-    config::load_file $SERVICE_CONFIG
-  fi
-
-  if [ -z "$SERVICE_INGRESS_HTTPS_PORT" ]; then
-      inquirer::text "请输入 SERVICE_INGRESS_HTTPS_PORT:" value
-      config::set SERVICE_INGRESS_HTTPS_PORT $value $SERVICE_CONFIG
-    fi
-
-    config::load_file $SERVICE_CONFIG
-  fi
+  config::load_file $SERVICE_CONFIG
 }
 
 check $@
