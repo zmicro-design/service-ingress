@@ -13,7 +13,8 @@ services:
       TZ: Aisa/Shanghai
     volumes:
       - ${SERVICE_INGRESS_CONFIG_DIR}:/app/conf/config
-      - ${SERVICE_INGRESS_CONFIG_DIR}/ssl:/config/ssl
+      # - ${SERVICE_INGRESS_CONFIG_DIR}/ssl:/config/ssl
+      - ${SERVICE_INGRESS_CONFIG_DIR}/ssl:/etc/letsencrypt/live
       - ${SERVICE_LOGS}/waf:/var/log/waf
 
 networks:
