@@ -13,11 +13,6 @@ check() {
     exit 1
   fi
 
-  if [ -z "$SERVICE_INGRESS_DOMAIN" ]; then
-    inquirer::text "请输入 SERVICE_INGRESS_DOMAIN:" value
-    config::set SERVICE_INGRESS_DOMAIN $value $SERVICE_CONFIG
-  fi
-
   if [ -z "$SERVICE_INGRESS_HTTP_PORT" ]; then
     inquirer::text "请输入 SERVICE_INGRESS_HTTP_PORT:" value
     config::set SERVICE_INGRESS_HTTP_PORT $value $SERVICE_CONFIG
@@ -46,9 +41,8 @@ check() {
   fi
 
   if [ "$SERVICE_INGRESS_IS_LOCAL" = "false" ]; then
-    local SERVICE_INGRESS_DOMAIN_SSL=$SERVICE_INGRESS_SSL/$SERVICE_INGRESS_DOMAIN
-    if [ ! -d $SERVICE_INGRESS_DOMAIN_SSL ]; then
-      log::error "[ingress] cannot found ssl directory for $SERVICE_INGRESS_DOMAIN"
+    if [ ! -d $SERVICE_INGRESS_SSL ] || [ -z "$(ls $SERVICE_INGRESS_SSL)" ]; then
+      log::error "[ingress] cannot found ssl directory for $SERVICE_INGRESS_SSL"
       exit 1
     fi
   fi
@@ -57,7 +51,6 @@ check() {
   config::load_file $SERVICE_CONFIG
 
   # @TODO
-  export SERVICE_INGRESS_DOMAIN=$SERVICE_INGRESS_DOMAIN
   export SERVICE_INGRESS_IS_LOCAL=$SERVICE_INGRESS_IS_LOCAL
   export SERVICE_INGRESS_HTTP_PORT=$SERVICE_INGRESS_HTTP_PORT
   export SERVICE_INGRESS_HTTPS_PORT=$SERVICE_INGRESS_HTTPS_PORT
