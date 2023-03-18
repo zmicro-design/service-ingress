@@ -9,7 +9,7 @@ services:
     environment:
       DOMAIN: ${SERVICE_INGRESS_DOMAIN}
       # MODE: debug
-      HTTPS: "${SERVICE_INGRESS_HTTPS}"
+      FORCE_HTTPS: "${SERVICE_INGRESS_HTTPS}"
     volumes:
       - ${SERVICE_INGRESS_CONFIG_DIR}:/app/conf/config
       - ${SERVICE_INGRESS_CONFIG_DIR}/ssl:/config/ssl
