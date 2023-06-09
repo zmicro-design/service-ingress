@@ -10,6 +10,7 @@ services:
     environment:
       # MODE: debug
       FORCE_HTTPS: "${SERVICE_INGRESS_FORCE_HTTPS}"
+      FORCE_HEATH_CHECK_OK: "${SERVICE_INGRESS_FORCE_HEATH_CHECK_OK}"
       DISABLE_X_FRAME_OPTIONS: "${SERVICE_INGRESS_DISABLE_X_FRAME_OPTIONS}"
       TZ: Aisa/Shanghai
     volumes:
