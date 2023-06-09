@@ -10,6 +10,7 @@ services:
     environment:
       # MODE: debug
       FORCE_HTTPS: "${SERVICE_INGRESS_FORCE_HTTPS}"
+      DISABLE_X_FRAME_OPTIONS: "${SERVICE_INGRESS_DISABLE_X_FRAME_OPTIONS}"
       TZ: Aisa/Shanghai
     volumes:
       - ${SERVICE_INGRESS_CONFIG_DIR}:/app/conf/config
